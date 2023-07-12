@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "130060085952",
+    "project_id": "training-social-app-9243c",
+    "storage_bucket": "training-social-app-9243c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:130060085952:android:9f02a8fb2d1cbb0e46db25",
+        "android_client_info": {
+          "package_name": "com.ghassan.social_app_g"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "130060085952-md59bamhq4db3t0dp2tj5r0u7t46qq0d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX42JLHwIgCQEwphFJbSbtXYhGfHCVcd0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "130060085952-md59bamhq4db3t0dp2tj5r0u7t46qq0d.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "130060085952-rmfisskpfqi3tb2um6khlihnrgk6ttve.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.socialApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
