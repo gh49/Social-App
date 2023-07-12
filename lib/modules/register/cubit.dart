@@ -31,7 +31,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         email: email,
         password: password
     ).then((value) {
-      emit(RegisterSuccessState());
+      //emit(RegisterSuccessState());
       userCreate(
           uID: value.user!.uid,
           email: email,
@@ -57,7 +57,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
 
     FirebaseFirestore.instance.
-    collection("users").doc("uID").
+    collection("users").doc(uID).
     set(user.toJson()).then((value) {
       emit(CreateUserSuccessState());
     }).catchError((error) {

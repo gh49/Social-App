@@ -140,16 +140,9 @@ class RegisterScreen extends StatelessWidget {
                                 );
                               }
                             },
-                            text: 'LOGIN',
+                            text: 'REGISTER',
                           ),
                           fallback: (context) => Center(child: CircularProgressIndicator())
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              "Don't have an account?",
-                            ),
-                          ],
                         ),
                       ],
                     ),
