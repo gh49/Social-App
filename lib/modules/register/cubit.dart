@@ -39,7 +39,7 @@ class RegisterCubit extends Cubit<RegisterState> {
           phoneNumber: phoneNumber,
       );
     }).catchError((error) {
-      emit(RegisterErrorState(error));
+      emit(RegisterErrorState(error.toString()));
     });
   }
 
@@ -53,13 +53,14 @@ class RegisterCubit extends Cubit<RegisterState> {
         uID: uID,
         email: email,
         name: name,
-        phoneNumber: phoneNumber
+        phoneNumber: phoneNumber,
+        emailVerified: false,
     );
 
     FirebaseFirestore.instance.
     collection("users").doc(uID).
     set(user.toJson()).then((value) {
-      emit(CreateUserSuccessState());
+      emit(CreateUserSuccessState(uID));
     }).catchError((error) {
       emit(CreateUserErrorState(error.toString()));
     });

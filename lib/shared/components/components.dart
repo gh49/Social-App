@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+// Signout
+// uIDGlobal = null;
+// CacheHelper.removeData(key: 'uID');
+// navigateAndFinish(context, LoginScreen());
+
 Widget MyTFF({
   required TextEditingController controller,
   TextInputType keyboardType = TextInputType.text,
@@ -28,19 +33,41 @@ Widget MyTFF({
   ),
 );
 
+Widget MyTextButton({
+  required String text,
+  required void Function()? onPressed,
+  double? width,
+  Color textColor = Colors.blue,
+}) => Container(
+width: width,
+child: TextButton(
+child: Text(
+text,
+style: TextStyle(
+decoration: TextDecoration.underline,
+decorationColor: textColor,
+color: textColor,
+),
+),
+onPressed: onPressed
+),
+);
+
 Widget MyButton({
   required String text,
   required void Function()? onPressed,
   double width = double.infinity,
   double height = 50.0,
+  TextAlign textAlign = TextAlign.center,
 }) => Container(
-  width: double.infinity,
-  height: 50.0,
+  width: width,
+  height: height,
   color: Colors.blue,
   child: MaterialButton(
     onPressed: onPressed,
     child: Text(
       text,
+      textAlign: textAlign,
       style: TextStyle(
         color: Colors.white,
       ),

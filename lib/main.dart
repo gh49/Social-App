@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app_g/layouts/cubit/cubit.dart';
 import 'package:social_app_g/layouts/home_layout.dart';
 import 'package:social_app_g/modules/login/login_screen.dart';
 import 'package:social_app_g/shared/components/constants.dart';
@@ -22,6 +24,7 @@ void main() async {
 
   Widget startWidget = LoginScreen();
   uIDGlobal = CacheHelper.getData(key: "uID");
+
   if(uIDGlobal != null) {
     startWidget = HomeScreen();
   }
@@ -36,22 +39,29 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => AppCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (BuildContext context) => AppCubit(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => SocialCubit()..getUser()
+        ),
+      ],
       child: BlocConsumer<AppCubit, AppStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return MaterialApp(
-            title: 'Social App',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
-            home: startWidget,
-          );
-        }
-          ),
+          listener: (context, state) {},
+          builder: (context, state) {
+            return MaterialApp(
+              title: 'Social App',
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+                useMaterial3: true,
+              ),
+              home: startWidget,
+            );
+          }
+      ),
     );
   }
 }

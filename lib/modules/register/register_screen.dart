@@ -5,6 +5,8 @@ import 'package:social_app_g/layouts/home_layout.dart';
 import 'package:social_app_g/modules/register/cubit.dart';
 import 'package:social_app_g/modules/register/states.dart';
 import 'package:social_app_g/shared/components/components.dart';
+import 'package:social_app_g/shared/components/constants.dart';
+import 'package:social_app_g/shared/network/local/cache_helper.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
@@ -23,6 +25,8 @@ class RegisterScreen extends StatelessWidget {
       child: BlocConsumer<RegisterCubit, RegisterState>(
         listener: (context, state) {
           if(state is CreateUserSuccessState) {
+            CacheHelper.saveData(key: 'uID', value: state.uID);
+            uIDGlobal = state.uID;
             navigateAndFinish(context, HomeScreen());
           }
         },
@@ -101,8 +105,8 @@ class RegisterScreen extends StatelessWidget {
                             ),
                             obscureText: RegisterCubit.get(context).hidePassword,
                             validator: (value) {
-                              if(value == null || value.isEmpty) {
-                                return 'Please enter your password';
+                              if(value == null || value.toString().length < 6) {
+                                return 'Password is too short';
                               }
                               return null;
                             }
