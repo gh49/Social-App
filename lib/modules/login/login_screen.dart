@@ -2,10 +2,12 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:social_app_g/layouts/home_layout.dart';
 import 'package:social_app_g/shared/components/components.dart';
 import 'package:social_app_g/modules/login/cubit.dart';
 import 'package:social_app_g/modules/register/register_screen.dart';
 import 'package:social_app_g/modules/login/states.dart';
+import 'package:social_app_g/shared/network/local/cache_helper.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -27,6 +29,15 @@ class LoginScreen extends StatelessWidget {
                 state: ToastStates.ERROR,
                 context: context
             );
+          }
+          if(state is LoginSuccessState) {
+            print("Success received");
+            CacheHelper.saveData(
+                key: "uID",
+                value: state.uID
+            ).then((value) {
+              navigateAndFinish(context, HomeScreen());
+            });
           }
         },
         builder: (context, state) {
