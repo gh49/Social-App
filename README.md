@@ -1,6 +1,6 @@
-# social_app_g
+# Social App
 
-A new Flutter project.
+A social app developed for the sake of learning Flutter Development.
 
 ## Getting Started
 
