@@ -11,6 +11,7 @@ import 'package:social_app_g/shared/components/constants.dart';
 import 'package:social_app_g/shared/cubit/cubit.dart';
 import 'package:social_app_g/shared/cubit/states.dart';
 import 'package:social_app_g/shared/network/local/cache_helper.dart';
+import 'package:social_app_g/shared/styles/themes.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -54,10 +55,8 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               title: 'Social App',
               debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                useMaterial3: true,
-              ),
+              theme: lightTheme,
+              darkTheme: darkTheme,
               home: startWidget,
             );
           }

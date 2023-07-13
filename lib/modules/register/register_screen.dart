@@ -11,12 +11,12 @@ import 'package:social_app_g/shared/network/local/cache_helper.dart';
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
 
-  TextEditingController emailCtrlr = TextEditingController();
-  TextEditingController passwordCtrlr = TextEditingController();
-  TextEditingController usernameCtrlr = TextEditingController();
-  TextEditingController phoneNumCtrlr = TextEditingController();
+  final TextEditingController emailCtrlr = TextEditingController();
+  final TextEditingController passwordCtrlr = TextEditingController();
+  final TextEditingController usernameCtrlr = TextEditingController();
+  final TextEditingController phoneNumCtrlr = TextEditingController();
 
-  var formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {

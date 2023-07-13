@@ -47,95 +47,98 @@ class LoginScreen extends StatelessWidget {
                 'Social App',
               ),
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Center(
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Login',
-                        style: Theme.of(context).textTheme.displayLarge,
-                      ),
-                      SizedBox(
-                        height: 30.0,
-                      ),
-                      MyTFF(
-                          controller: emailCtrlr,
-                          keyboardType: TextInputType.emailAddress,
-                          labelText: 'Email Address',
-                          hintText: 'someone@example.com',
-                          prefixIcon: Icon(
-                            Icons.email,
-                          ),
-                          validator: (String? value) {
-                            if(value == null || value.isEmpty) {
-                              return 'Please enter your email address';
-                            }
-                            return null;
-                          }
-                      ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      MyTFF(
-                          controller: passwordCtrlr,
-                          keyboardType: TextInputType.visiblePassword,
-                          labelText: 'Password',
-                          prefixIcon: Icon(
-                            Icons.lock,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(LoginCubit.get(context).passwordSuffix),
-                            onPressed: () {
-                              LoginCubit.get(context).changePasswordVisibility();
-                            },
-                          ),
-                          obscureText: LoginCubit.get(context).hidePassword,
-                          validator: (value) {
-                            if(value == null || value.isEmpty) {
-                              return 'Please enter your password';
-                            }
-                            return null;
-                          }
-                      ),
-                      SizedBox(
-                        height: 20.0,
-                      ),
-                      ConditionalBuilder(
-                          condition: state is !LoginLoadingState,
-                          builder: (context) => MyButton(
-                            onPressed: () {
-                              if(formKey.currentState!.validate()) {
-                                LoginCubit.get(context).userLogin(
-                                  email: emailCtrlr.text,
-                                  password: passwordCtrlr.text,
-                                );
-                              }
-                            },
-                            text: 'LOGIN',
-                          ),
-                          fallback: (context) => Center(child: CircularProgressIndicator())
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "Don't have an account?",
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              navigateTo(context, RegisterScreen());
-                            },
-                            child: Text(
-                              'Register now!',
+            body: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Login',
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        MyTFF(
+                            controller: emailCtrlr,
+                            keyboardType: TextInputType.emailAddress,
+                            labelText: 'Email Address',
+                            hintText: 'someone@example.com',
+                            prefixIcon: Icon(
+                              Icons.email,
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            validator: (String? value) {
+                              if(value == null || value.isEmpty) {
+                                return 'Please enter your email address';
+                              }
+                              return null;
+                            }
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        MyTFF(
+                            controller: passwordCtrlr,
+                            keyboardType: TextInputType.visiblePassword,
+                            labelText: 'Password',
+                            prefixIcon: Icon(
+                              Icons.lock,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(LoginCubit.get(context).passwordSuffix),
+                              onPressed: () {
+                                LoginCubit.get(context).changePasswordVisibility();
+                              },
+                            ),
+                            obscureText: LoginCubit.get(context).hidePassword,
+                            validator: (value) {
+                              if(value == null || value.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              return null;
+                            }
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        ConditionalBuilder(
+                            condition: state is !LoginLoadingState,
+                            builder: (context) => MyButton(
+                              onPressed: () {
+                                if(formKey.currentState!.validate()) {
+                                  LoginCubit.get(context).userLogin(
+                                    email: emailCtrlr.text,
+                                    password: passwordCtrlr.text,
+                                  );
+                                }
+                              },
+                              text: 'LOGIN',
+                            ),
+                            fallback: (context) => Center(child: CircularProgressIndicator())
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Don't have an account?",
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                navigateTo(context, RegisterScreen());
+                              },
+                              child: Text(
+                                'Register now!',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
