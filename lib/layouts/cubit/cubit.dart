@@ -6,6 +6,7 @@ import 'package:social_app_g/layouts/cubit/states.dart';
 import 'package:social_app_g/models/UserData.dart';
 import 'package:social_app_g/modules/chats/chats_screen.dart';
 import 'package:social_app_g/modules/feed/feed_screen.dart';
+import 'package:social_app_g/modules/new_post/new_post_screen.dart';
 import 'package:social_app_g/modules/settings/settings_screen.dart';
 import 'package:social_app_g/modules/users/users_screen.dart';
 
@@ -20,6 +21,7 @@ class SocialCubit extends Cubit<SocialStates> {
   List<Widget> screens = [
     FeedScreen(),
     ChatsScreen(),
+    NewPostScreen(),
     UsersScreen(),
     SettingsScreen(),
   ];
@@ -27,6 +29,7 @@ class SocialCubit extends Cubit<SocialStates> {
   List<String> titles = [
     "Feed",
     "Chats",
+    "New Post",
     "Users",
     "Settings",
   ];
@@ -34,8 +37,12 @@ class SocialCubit extends Cubit<SocialStates> {
   int screenIndex = 0;
 
   void changeBottomNavigation(int index) {
-    screenIndex = index;
-    emit(SocialChangeBottomNavigation());
+    if(index == 2)
+      emit(SocialNewPostNavigation());
+    else {
+      screenIndex = index;
+      emit(SocialChangeBottomNavigation());
+    }
   }
 
   void getUser() {

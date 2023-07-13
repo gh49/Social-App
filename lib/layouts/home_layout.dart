@@ -6,6 +6,7 @@ import 'package:icon_broken/icon_broken.dart';
 import 'package:social_app_g/layouts/cubit/cubit.dart';
 import 'package:social_app_g/layouts/cubit/states.dart';
 import 'package:social_app_g/modules/login/login_screen.dart';
+import 'package:social_app_g/modules/new_post/new_post_screen.dart';
 import 'package:social_app_g/shared/components/components.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,6 +18,9 @@ class HomeScreen extends StatelessWidget {
       listener: (context, state) {
         if(state is SocialGetUserErrorState) {
           navigateAndFinish(context, LoginScreen());
+        }
+        if(state is SocialNewPostNavigation) {
+          navigateTo(context, NewPostScreen());
         }
       },
       builder: (context, state) {
@@ -57,13 +61,13 @@ class HomeScreen extends StatelessWidget {
             items: [
               BottomNavigationBarItem(icon: Icon(IconBroken.Home), label: ""),
               BottomNavigationBarItem(icon: Icon(IconBroken.Chat), label: ""),
+              BottomNavigationBarItem(icon: Icon(IconBroken.Upload), label: ""),
               BottomNavigationBarItem(icon: Icon(IconBroken.User), label: ""),
               BottomNavigationBarItem(icon: Icon(IconBroken.Setting), label: ""),
             ],
           ),
           body: SingleChildScrollView(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
                 ConditionalBuilder(
                   condition: SocialCubit.get(context).currentUser != null,
