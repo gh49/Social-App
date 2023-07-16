@@ -1,16 +1,23 @@
+import 'dart:ui';
+
 class UserData {
   String uID;
   String email;
   String name;
   String phoneNumber;
-  bool emailVerified;
+  String image;
+  String cover;
+  String bio;
+
 
   UserData({
     required this.uID,
     required this.email,
     required this.name,
     required this.phoneNumber,
-    required this.emailVerified,
+    required this.image,
+    required this.cover,
+    required this.bio,
 });
 
   UserData.fromJson(Map<String, dynamic> json)
@@ -18,19 +25,22 @@ class UserData {
         email = json['email'],
         name = json['name'],
         phoneNumber = json['phoneNumber'],
-        emailVerified = json['emailVerified'];
+        image = json['image'],
+        cover = json['cover'],
+        bio = json['bio'];
 
   Map<String, dynamic> toJson() => {
     'uID': uID,
     'email': email,
     'name': name,
     'phoneNumber': phoneNumber,
-    'emailVerified': emailVerified,
+    'image': image,
+    'cover': cover,
+    'bio': bio,
   };
 
   @override
   String toString() {
-    return "uID: $uID, email: $email, name: $name, phone number: $phoneNumber"
-        ", Verification status: ${emailVerified ? 'Verified' : 'Not Verified'}";
+    return "uID: $uID, email: $email, name: $name, phone number: $phoneNumber";
   }
 }

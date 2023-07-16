@@ -26,7 +26,7 @@ void main() async {
   Widget startWidget = LoginScreen();
   uIDGlobal = CacheHelper.getData(key: "uID");
 
-  if(uIDGlobal != null) {
+  if(FirebaseAuth.instance.currentUser != null) {
     startWidget = HomeScreen();
   }
 

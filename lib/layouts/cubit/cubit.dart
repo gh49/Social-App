@@ -47,17 +47,23 @@ class SocialCubit extends Cubit<SocialStates> {
 
   void getUser() {
     emit(SocialGetUserLoadingState());
-
-    FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get()
-    .then((value) {
-      currentUser = UserData.fromJson(value.data()!);
-      print(currentUser.toString());
-      print(FirebaseAuth.instance.currentUser!.emailVerified);
-      emit(SocialGetUserSuccessState());
-    }).catchError((error) {
-      emit(SocialGetUserErrorState(error.toString()));
-      FirebaseAuth.instance.signOut();
-      print(error.toString());
-    });
+    if(FirebaseAuth.instance.currentUser == null) {
+      emit(SocialGetUserErrorState(""));
+      print("User is null");
+      currentUser = null;
+    }
+    else
+      FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get()
+      .then((value) {
+        currentUser = UserData.fromJson(value.data()!);
+        print(currentUser.toString());
+        print(FirebaseAuth.instance.currentUser!.emailVerified);
+        emit(SocialGetUserSuccessState());
+      }).catchError((error) {
+        emit(SocialGetUserErrorState(error.toString()));
+        FirebaseAuth.instance.signOut();
+        print(error.toString());
+        currentUser = null;
+      });
   }
 }

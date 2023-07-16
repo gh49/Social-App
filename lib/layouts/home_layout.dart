@@ -16,8 +16,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
       listener: (context, state) {
+        print(state.toString());
         if(state is SocialGetUserErrorState) {
           navigateAndFinish(context, LoginScreen());
+          print(state.error.toString());
         }
         if(state is SocialNewPostNavigation) {
           navigateTo(context, NewPostScreen());
