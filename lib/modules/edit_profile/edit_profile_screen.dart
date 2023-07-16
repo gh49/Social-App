@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icon_broken/icon_broken.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:social_app_g/layouts/cubit/cubit.dart';
 import 'package:social_app_g/layouts/cubit/states.dart';
 import 'package:social_app_g/models/UserData.dart';
@@ -20,6 +23,11 @@ class EditProfileScreen extends StatelessWidget {
       },
       builder: (context, state) {
         UserData userData = SocialCubit.get(context).currentUser!;
+        File? newProfileImage = SocialCubit.get(context).profileImage;
+        File? newCoverImage = SocialCubit.get(context).coverImage;
+
+        nameCtrlr.text = userData.name;
+        bioCtrlr.text = userData.bio;
 
         return Scaffold(
           appBar: AppBar(
@@ -27,7 +35,10 @@ class EditProfileScreen extends StatelessWidget {
             actions: [
               TextButton(
                   onPressed: () {
-
+                    SocialCubit.get(context).updateUser(
+                        name: nameCtrlr.text,
+                        bio: bioCtrlr.text,
+                    );
                   },
                   child: Text(
                     "SAVE",
@@ -38,6 +49,9 @@ class EditProfileScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
+                if(state is SocialLoadingUpdateUserState)
+                  LinearProgressIndicator(),
+                SizedBox(height: 10.0,),
                 Container(
                   height: 180.0,
                   child: Stack(
@@ -57,17 +71,16 @@ class EditProfileScreen extends StatelessWidget {
                                   ),
                                   image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      image: NetworkImage(userData.cover))
+                                      image: ((newCoverImage == null) ? NetworkImage(userData.cover) : FileImage(newCoverImage)) as ImageProvider)
                               ),
                             ),
                             IconButton(
-
                               icon: CircleAvatar(
                                 backgroundColor: Colors.blue,
                                 child: Icon(Icons.edit, size: 20.0,),
                               ),
                               onPressed: () {
-
+                                SocialCubit.get(context).getCoverImage();
                               },
                             ),
                           ],
@@ -82,7 +95,7 @@ class EditProfileScreen extends StatelessWidget {
                             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                             child: CircleAvatar(
                               radius: 50.0,
-                              backgroundImage: NetworkImage(userData.image),
+                              backgroundImage: ((newProfileImage == null) ? NetworkImage(userData.image) : FileImage(newProfileImage)) as ImageProvider
                             ),
                           ),
                           IconButton(
@@ -92,7 +105,7 @@ class EditProfileScreen extends StatelessWidget {
                               child: Icon(Icons.edit, size: 20.0,),
                             ),
                             onPressed: () {
-
+                              SocialCubit.get(context).getProfileImage();
                             },
                           ),
                         ],

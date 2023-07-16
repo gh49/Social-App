@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:social_app_g/layouts/cubit/states.dart';
 import 'package:social_app_g/models/UserData.dart';
 import 'package:social_app_g/modules/chats/chats_screen.dart';
@@ -38,7 +42,7 @@ class SocialCubit extends Cubit<SocialStates> {
 
   void changeBottomNavigation(int index) {
     if(index == 2)
-      emit(SocialNewPostNavigation());
+      emit(SocialNewPostState());
     else {
       screenIndex = index;
       emit(SocialChangeBottomNavigation());
@@ -65,5 +69,122 @@ class SocialCubit extends Cubit<SocialStates> {
         print(error.toString());
         currentUser = null;
       });
+  }
+
+  void initSocial() {
+    getUser();
+    emit(SocialAfterInitState());
+  }
+
+  File? profileImage;
+  File? coverImage;
+  final ImagePicker imagePicker = ImagePicker();
+
+  Future<void> getProfileImage() async {
+    final pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+
+    if(pickedImage != null) {
+      profileImage = File(pickedImage.path);
+      emit(SocialProfileImagePickedSuccessState());
+    }
+    else {
+      print("No image is selected");
+      emit(SocialProfileImagePickedErrorState());
+    }
+  }
+
+  Future<void> getCoverImage() async {
+    final pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+
+    if(pickedImage != null) {
+      coverImage = File(pickedImage.path);
+      emit(SocialCoverImagePickedSuccessState());
+    }
+    else {
+      print("No image is selected");
+      emit(SocialCoverImagePickedErrorState());
+    }
+  }
+
+  String? profileImageURL;
+
+  void uploadProfileImage() {
+    if(profileImage == null) {
+      print("Can't upload empty profile image");
+      return;
+    }
+    firebase_storage.FirebaseStorage.instance.ref()
+        .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
+        .putFile(profileImage!)
+        .then((value) {
+          value.ref.getDownloadURL().then((value) {
+            emit(SocialUploadProfileImagePickedSuccessState());
+            print(value);
+            profileImageURL = value;
+          }).catchError((error) {
+            emit(SocialUploadProfileImagePickedErrorState());
+          });
+        })
+        .catchError((error) {
+          emit(SocialUploadProfileImagePickedErrorState());
+        });
+  }
+
+  String? coverImageURL;
+
+  void uploadCoverImage() {
+    if(coverImage == null) {
+      print("Can't upload empty cover image");
+      return;
+    }
+    firebase_storage.FirebaseStorage.instance.ref()
+        .child('users/${Uri.file(coverImage!.path).pathSegments.last}')
+        .putFile(coverImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        emit(SocialUploadCoverImagePickedSuccessState());
+        print(value);
+        coverImageURL = value;
+      }).catchError((error) {
+        emit(SocialUploadCoverImagePickedErrorState());
+      });
+    })
+        .catchError((error) {
+      emit(SocialUploadCoverImagePickedErrorState());
+    });
+  }
+
+  void updateUser({
+    required String name,
+    required String bio,
+}) {
+    emit(SocialLoadingUpdateUserState());
+    Map<String, dynamic> newData = currentUser!.toJson();
+
+    if(profileImage != null) {
+      uploadProfileImage();
+      newData['image'] = profileImageURL;
+    }
+    if(coverImage != null) {
+      uploadCoverImage();
+      newData['cover'] = coverImageURL;
+    }
+
+    print(profileImageURL);
+    print(coverImageURL);
+
+    newData['name'] = name;
+    newData['bio'] = bio;
+
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser!.uID)
+        .update(newData)
+        .then((value) {
+          getUser();
+        })
+        .catchError((error) {
+          emit(SocialUpdateUserErrorState());
+        });
   }
 }

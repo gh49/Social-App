@@ -17,11 +17,14 @@ class HomeScreen extends StatelessWidget {
     return BlocConsumer<SocialCubit, SocialStates>(
       listener: (context, state) {
         print(state.toString());
+        if(state is SocialInitState) {
+          SocialCubit.get(context).initSocial();
+        }
         if(state is SocialGetUserErrorState) {
           navigateAndFinish(context, LoginScreen());
           print(state.error.toString());
         }
-        if(state is SocialNewPostNavigation) {
+        if(state is SocialNewPostState) {
           navigateTo(context, NewPostScreen());
         }
       },

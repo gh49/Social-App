@@ -50,7 +50,9 @@ class RegisterScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Register',
-                          style: Theme.of(context).textTheme.displayLarge,
+                          style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                            fontSize: 80.0,
+                          ),
                         ),
                         SizedBox(
                           height: 30.0,
