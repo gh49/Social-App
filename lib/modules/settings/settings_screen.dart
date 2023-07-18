@@ -128,7 +128,11 @@ class SettingsScreen extends StatelessWidget {
               MyButton(
                   text: "Edit Profile",
                   onPressed: () {
-                    navigateTo(context, EditProfileScreen());
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => EditProfileScreen()),
+                    );
+                    //navigateTo(context, EditProfileScreen());
                   })
             ],
           ),
