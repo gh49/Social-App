@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app_g/layouts/cubit/cubit.dart';
 import 'package:social_app_g/layouts/cubit/states.dart';
-import 'package:social_app_g/models/UserData.dart';
+import 'package:social_app_g/models/user_data.dart';
 import 'package:social_app_g/modules/edit_profile/edit_profile_screen.dart';
 import 'package:social_app_g/shared/components/components.dart';
 

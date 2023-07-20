@@ -6,7 +6,7 @@ import 'package:icon_broken/icon_broken.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app_g/layouts/cubit/cubit.dart';
 import 'package:social_app_g/layouts/cubit/states.dart';
-import 'package:social_app_g/models/UserData.dart';
+import 'package:social_app_g/models/user_data.dart';
 import 'package:social_app_g/shared/components/components.dart';
 
 class EditProfileScreen extends StatelessWidget {

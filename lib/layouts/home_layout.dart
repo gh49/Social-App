@@ -50,6 +50,7 @@ class HomeScreen extends StatelessWidget {
                 IconButton(
                     onPressed: (){
                       FirebaseAuth.instance.signOut().then((value) {
+                        cubit.screenIndex = 0;
                         navigateAndFinish(context, LoginScreen());
                       }).catchError((error) {
                         navigateAndFinish(context, LoginScreen());

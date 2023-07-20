@@ -8,8 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app_g/layouts/cubit/states.dart';
-import 'package:social_app_g/models/PostData.dart';
-import 'package:social_app_g/models/UserData.dart';
+import 'package:social_app_g/models/message_data.dart';
+import 'package:social_app_g/models/post_data.dart';
+import 'package:social_app_g/models/user_data.dart';
 import 'package:social_app_g/modules/chats/chats_screen.dart';
 import 'package:social_app_g/modules/feed/feed_screen.dart';
 import 'package:social_app_g/modules/new_post/new_post_screen.dart';
@@ -43,12 +44,16 @@ class SocialCubit extends Cubit<SocialStates> {
   int screenIndex = 0;
 
   void changeBottomNavigation(int index) {
-    if(index == 2)
+    if(index == 2) {
       emit(SocialNewPostState());
-    else {
-      screenIndex = index;
-      emit(SocialChangeBottomNavigation());
+      return;
     }
+    if(index == 1) {
+      getAllUsers();
+    }
+    screenIndex = index;
+    emit(SocialChangeBottomNavigation());
+
   }
 
   void getUser() {
@@ -258,6 +263,7 @@ class SocialCubit extends Cubit<SocialStates> {
           posts.add(PostData.fromJson(element.data()));
           postIDList.add(element.id);
           likes.add(value.docs.length);
+          emit(SocialGetPostsSuccessState());
         }).
         catchError((error) {
           emit(SocialGetPostsErrorState(error.toString()));
@@ -326,5 +332,108 @@ class SocialCubit extends Cubit<SocialStates> {
     }).catchError((error) {
       emit(SocialGetPostsErrorState(error.toString()));
     });
+  }
+
+  List<UserData> allUsers = [];
+
+  void getAllUsers() {
+    if(allUsers.isEmpty)
+    FirebaseFirestore.instance.
+    collection('users').
+    get().
+    then((value) {
+      value.docs.forEach((element) {
+        if(element.data()['uID'] != currentUser!.uID) {
+          allUsers.add(UserData.fromJson(element.data()));
+        }
+      });
+      print("Get Users Done");
+      emit(SocialGetAllUsersSuccessState());
+    }).catchError((error) {
+      emit(SocialGetAllUsersErrorState(error.toString()));
+    });
+  }
+
+  void sendMessage(String receiverUID, String dateTime, String text) {
+    MessageData message = MessageData(
+        senderUID: currentUser!.uID,
+        receiverUID: receiverUID,
+        dateTime: dateTime,
+        text: text
+    );
+
+    FirebaseFirestore.instance.
+    collection('users').
+    doc(currentUser!.uID).
+    collection('chats').
+    doc(receiverUID).
+    collection('messages').
+    add(message.toJson()).then((value) {
+      emit(SocialSendMessageSuccessState());
+      print("Sent successfully");
+    }).catchError((error) {
+      emit(SocialSendMessageErrorState());
+  });
+
+    FirebaseFirestore.instance.
+    collection('users').
+    doc(receiverUID).
+    collection('chats').
+    doc(currentUser!.uID).
+    collection('messages').
+    add(message.toJson()).then((value) {
+      emit(SocialSendMessageSuccessState());
+      print("Sent successfully");
+    }).catchError((error) {
+      emit(SocialSendMessageErrorState());
+    });
+  }
+
+  List<MessageData> messages = [];
+
+  void getMessages(String otherUserUID) {
+    messages = [];
+    FirebaseFirestore.instance.
+    collection('users').
+    doc(currentUser!.uID).
+    collection('chats').
+    doc(otherUserUID).
+    collection('messages').
+    snapshots(). 
+    listen((event) {
+      messages = [];
+      event.docs.forEach((element) {
+        messages.add(MessageData.fromJson(element.data()));
+      }
+      );
+      sortMessages();
+      emit(SocialReceiveMessagesSuccessState());
+    });
+  }
+
+  //2023-07-20 17:16:05.626628
+  void sortMessages() {
+    List<DateTime> arnab = [];
+    for(int i=0; i<messages.length; i++) {
+      arnab.add(DateTime.parse(messages[i].dateTime));
+    }
+
+    for(int i=0; i<arnab.length; i++) {
+      int min = i;
+      for(int j=i; j<arnab.length; j++) {
+        if(arnab[j].isBefore(arnab[i])) {
+          min = j;
+        }
+      }
+      DateTime tmp = arnab[i];
+      arnab[i] = arnab[min];
+      arnab[min] = tmp;
+
+      MessageData tmp1 = messages[i];
+      messages[i] = messages[min];
+      messages[min] = tmp1;
+    }
+
+    print(messages);
   }
 }
