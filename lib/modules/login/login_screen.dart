@@ -12,8 +12,8 @@ import 'package:social_app_g/shared/network/local/cache_helper.dart';
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
-  TextEditingController emailCtrlr = TextEditingController();
-  TextEditingController passwordCtrlr = TextEditingController();
+  final TextEditingController emailCtrlr = TextEditingController();
+  final TextEditingController passwordCtrlr = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
   @override
@@ -31,24 +31,23 @@ class LoginScreen extends StatelessWidget {
             );
           }
           if(state is LoginSuccessState) {
-            print("Success received");
             CacheHelper.saveData(
                 key: "uID",
                 value: state.uID
             ).then((value) {
-              navigateAndFinish(context, HomeScreen());
+              navigateAndFinish(context, const HomeScreen());
             });
           }
         },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(
+              title: const Text(
                 'Social App',
               ),
             ),
             body: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Center(
@@ -62,7 +61,7 @@ class LoginScreen extends StatelessWidget {
                           'Login',
                           style: Theme.of(context).textTheme.displayLarge,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30.0,
                         ),
                         MyTFF(
@@ -70,7 +69,7 @@ class LoginScreen extends StatelessWidget {
                             keyboardType: TextInputType.emailAddress,
                             labelText: 'Email Address',
                             hintText: 'someone@example.com',
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.email,
                             ),
                             validator: (String? value) {
@@ -80,14 +79,14 @@ class LoginScreen extends StatelessWidget {
                               return null;
                             }
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20.0,
                         ),
                         MyTFF(
                             controller: passwordCtrlr,
                             keyboardType: TextInputType.visiblePassword,
                             labelText: 'Password',
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.lock,
                             ),
                             suffixIcon: IconButton(
@@ -104,7 +103,7 @@ class LoginScreen extends StatelessWidget {
                               return null;
                             }
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20.0,
                         ),
                         ConditionalBuilder(
@@ -120,18 +119,18 @@ class LoginScreen extends StatelessWidget {
                               },
                               text: 'LOGIN',
                             ),
-                            fallback: (context) => Center(child: CircularProgressIndicator())
+                            fallback: (context) => const Center(child: CircularProgressIndicator())
                         ),
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               "Don't have an account?",
                             ),
                             TextButton(
                               onPressed: () {
                                 navigateTo(context, RegisterScreen());
                               },
-                              child: Text(
+                              child: const Text(
                                 'Register now!',
                               ),
                             ),

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icon_broken/icon_broken.dart';
 import 'package:social_app_g/layouts/cubit/cubit.dart';
 import 'package:social_app_g/layouts/cubit/states.dart';
 import 'package:social_app_g/models/post_data.dart';
-import 'package:social_app_g/models/user_data.dart';
 
 class PostScreen extends StatelessWidget {
-  PostData postData;
-  int index;
+  final PostData postData;
+  final int index;
 
-  TextEditingController commentCtrlr = TextEditingController();
+  final TextEditingController commentCtrlr = TextEditingController();
 
   PostScreen({super.key,
     required this.postData,
@@ -39,7 +37,7 @@ class PostScreen extends StatelessWidget {
                         radius: 25.0,
                         backgroundImage: NetworkImage(postData.image),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20.0,
                       ),
                       Expanded(
@@ -51,10 +49,10 @@ class PostScreen extends StatelessWidget {
                                 Text(
                                     postData.name
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5.0,
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.check_circle_rounded,
                                   color: Colors.blue,
                                   size: 17,
@@ -68,12 +66,12 @@ class PostScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20.0,
                       ),
                       IconButton(
                           onPressed: () {},
-                          icon: Icon(Icons.more_vert)
+                          icon: const Icon(Icons.more_vert)
                       ),
                     ],
                   ),
@@ -90,8 +88,8 @@ class PostScreen extends StatelessWidget {
                     textAlign: TextAlign.start,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  SizedBox(height: 10.0,),
-                  if(postData.postImage != null && postData.postImage!.length > 0)
+                  const SizedBox(height: 10.0,),
+                  if(postData.postImage != null && postData.postImage!.isNotEmpty)
                     Container(
                       width: double.infinity,
                       height: 150,
@@ -100,7 +98,7 @@ class PostScreen extends StatelessWidget {
                           image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(postData.postImage!))
                       ),
                     ),
-                  SizedBox(height: 10.0,),
+                  const SizedBox(height: 10.0,),
                   TextFormField(
                     controller: commentCtrlr,
                     keyboardType: TextInputType.multiline,
@@ -109,20 +107,21 @@ class PostScreen extends StatelessWidget {
                       hintText: "Comment...",
                       focusColor: Colors.grey,
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.send),
+                        icon: const Icon(Icons.send),
                         onPressed: () {
-                          if(commentCtrlr.text.isEmpty)
+                          if(commentCtrlr.text.isEmpty) {
                             return;
+                          }
                           SocialCubit.get(context).commentOnPost(SocialCubit.get(context).postIDList[index], commentCtrlr.text);
                         },
                       ),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(30.0))
                     ),
                   ),
-                  SizedBox(height: 15.0,),
+                  const SizedBox(height: 15.0,),
                   ListView.separated(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: cubit.comments.length,
                     itemBuilder: (context, index) {
                       Map<String, dynamic> comment = cubit.comments[index];
@@ -135,7 +134,7 @@ class PostScreen extends StatelessWidget {
                       );
                     },
                     separatorBuilder: (context, index) {
-                      return SizedBox(height: 8.0,);
+                      return const SizedBox(height: 8.0,);
                     },
                   ),
 
@@ -162,7 +161,7 @@ class PostScreen extends StatelessWidget {
               radius: 18.0,
               backgroundImage: NetworkImage(image),
             ),
-            SizedBox(
+            const SizedBox(
               width: 20.0,
             ),
             Expanded(
@@ -173,24 +172,24 @@ class PostScreen extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5.0,
                       ),
-                      Icon(
+                      const Icon(
                         Icons.check_circle_rounded,
                         color: Colors.blue,
                         size: 17,
                       ),
                     ],
                   ),
-                  SizedBox(height: 5,),
+                  const SizedBox(height: 5,),
                   Text(
                     comment,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 13.0,
                     ),
                   ),

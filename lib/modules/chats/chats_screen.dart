@@ -6,10 +6,9 @@ import 'package:social_app_g/layouts/cubit/states.dart';
 import 'package:social_app_g/models/user_data.dart';
 import 'package:social_app_g/modules/chats/in_chat_screen.dart';
 import 'package:social_app_g/shared/components/components.dart';
-import 'package:social_app_g/shared/components/constants.dart';
 
 class ChatsScreen extends StatelessWidget {
-  ChatsScreen({super.key});
+  const ChatsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +19,10 @@ class ChatsScreen extends StatelessWidget {
       },
       builder: (context, state) {
         return ConditionalBuilder(
-            condition: cubit.allUsers.length > 0,
+            condition: cubit.allUsers.isNotEmpty,
             builder: (context) {
               return ListView.separated(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: cubit.allUsers.length,
                 itemBuilder: (context, index) {
@@ -36,7 +35,7 @@ class ChatsScreen extends StatelessWidget {
               );
             },
             fallback: (context) {
-              return Center(child: CircularProgressIndicator(),);
+              return const Center(child: CircularProgressIndicator(),);
             }
         );
       },
@@ -58,7 +57,7 @@ class ChatsScreen extends StatelessWidget {
               radius: 25.0,
               backgroundImage: NetworkImage(image),
             ),
-            SizedBox(
+            const SizedBox(
               width: 20.0,
             ),
             Expanded(
@@ -69,7 +68,7 @@ class ChatsScreen extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 20.0
                         ),
                       ),

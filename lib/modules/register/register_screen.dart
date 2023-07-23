@@ -27,20 +27,20 @@ class RegisterScreen extends StatelessWidget {
           if(state is CreateUserSuccessState) {
             CacheHelper.saveData(key: 'uID', value: state.uID);
             uIDGlobal = state.uID;
-            navigateAndFinish(context, HomeScreen());
+            navigateAndFinish(context, const HomeScreen());
           }
         },
         builder: (context, state) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(
+              title: const Text(
                 'Social App',
               ),
             ),
             body: Padding(
               padding: const EdgeInsets.all(20.0),
               child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 child: Center(
                   child: Form(
                     key: formKey,
@@ -54,14 +54,14 @@ class RegisterScreen extends StatelessWidget {
                             fontSize: 80.0,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30.0,
                         ),
                         MyTFF(
                             controller: usernameCtrlr,
                             keyboardType: TextInputType.name,
                             labelText: 'Username',
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.person,
                             ),
                             validator: (String? value) {
@@ -71,7 +71,7 @@ class RegisterScreen extends StatelessWidget {
                               return null;
                             }
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20.0,
                         ),
                         MyTFF(
@@ -79,7 +79,7 @@ class RegisterScreen extends StatelessWidget {
                             keyboardType: TextInputType.emailAddress,
                             labelText: 'Email Address',
                             hintText: 'someone@example.com',
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.email,
                             ),
                             validator: (String? value) {
@@ -89,14 +89,14 @@ class RegisterScreen extends StatelessWidget {
                               return null;
                             }
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20.0,
                         ),
                         MyTFF(
                             controller: passwordCtrlr,
                             keyboardType: TextInputType.visiblePassword,
                             labelText: 'Password',
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.lock,
                             ),
                             suffixIcon: IconButton(
@@ -113,14 +113,14 @@ class RegisterScreen extends StatelessWidget {
                               return null;
                             }
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20.0,
                         ),
                         MyTFF(
                             controller: phoneNumCtrlr,
                             keyboardType: TextInputType.phone,
                             labelText: 'Phone Number',
-                            prefixIcon: Icon(
+                            prefixIcon: const Icon(
                               Icons.phone,
                             ),
                             validator: (String? value) {
@@ -130,7 +130,7 @@ class RegisterScreen extends StatelessWidget {
                               return null;
                             }
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 30.0,
                         ),
                         ConditionalBuilder(
@@ -148,7 +148,7 @@ class RegisterScreen extends StatelessWidget {
                             },
                             text: 'REGISTER',
                           ),
-                          fallback: (context) => Center(child: CircularProgressIndicator())
+                          fallback: (context) => const Center(child: CircularProgressIndicator())
                         ),
                       ],
                     ),

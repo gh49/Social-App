@@ -5,15 +5,15 @@ Color defaultColor = Colors.blue;
 
 ThemeData darkTheme = ThemeData(
   //primarySwatch: defaultColor,
-  scaffoldBackgroundColor: Color(0x333739),
-  appBarTheme: AppBarTheme(
+  scaffoldBackgroundColor: const Color(0x00333739),
+  appBarTheme: const AppBarTheme(
     titleSpacing: 20.0,
     //backwardsCompatibility: false,
     systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor: Color(0x333739),
+      statusBarColor: Color(0x00333739),
       statusBarIconBrightness: Brightness.light,
     ),
-    backgroundColor: Color(0x333739),
+    backgroundColor: Color(0x00333739),
     elevation: 0.0,
     titleTextStyle: TextStyle(
       color: Colors.white,
@@ -29,9 +29,9 @@ ThemeData darkTheme = ThemeData(
     selectedItemColor: defaultColor,
     unselectedItemColor: Colors.grey,
     elevation: 20.0,
-    backgroundColor: Color(0x333739),
+    backgroundColor: const Color(0x00333739),
   ),
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     bodyLarge: TextStyle(
       fontSize: 18.0,
       fontWeight: FontWeight.w600,
@@ -42,7 +42,7 @@ ThemeData darkTheme = ThemeData(
 
 ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     titleSpacing: 20.0,
     //backwardsCompatibility: false,
     systemOverlayStyle: SystemUiOverlayStyle(
@@ -67,7 +67,7 @@ ThemeData lightTheme = ThemeData(
     elevation: 20.0,
     backgroundColor: Colors.white,
   ),
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     bodyLarge: TextStyle(
       fontSize: 18.0,
       fontWeight: FontWeight.w600,

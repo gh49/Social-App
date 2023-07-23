@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:icon_broken/icon_broken.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:social_app_g/layouts/cubit/cubit.dart';
 import 'package:social_app_g/layouts/cubit/states.dart';
 import 'package:social_app_g/models/user_data.dart';
@@ -12,8 +10,8 @@ import 'package:social_app_g/shared/components/components.dart';
 class EditProfileScreen extends StatelessWidget {
   EditProfileScreen({super.key});
 
-  TextEditingController nameCtrlr = TextEditingController();
-  TextEditingController bioCtrlr = TextEditingController();
+  final TextEditingController nameCtrlr = TextEditingController();
+  final TextEditingController bioCtrlr = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,7 @@ class EditProfileScreen extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text("Edit Profile"),
+              title: const Text("Edit Profile"),
               actions: [
                 TextButton(
                     onPressed: () {
@@ -40,7 +38,7 @@ class EditProfileScreen extends StatelessWidget {
                           bio: bioCtrlr.text,
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       "SAVE",
                     )),
               ],
@@ -50,14 +48,15 @@ class EditProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   if(state is SocialLoadingUpdateUserState)
-                    LinearProgressIndicator(),
-                  SizedBox(height: 10.0,),
+                    const LinearProgressIndicator(),
+                  const SizedBox(height: 10.0,),
                   Container(
                     height: 180.0,
                     child: Stack(
                       alignment: Alignment.bottomCenter,
                       children: [
                         Align(
+                          alignment: Alignment.topCenter,
                           child: Stack(
                             alignment: Alignment.topRight,
                             children: [
@@ -65,7 +64,7 @@ class EditProfileScreen extends StatelessWidget {
                                 width: double.infinity,
                                 height: 150,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
+                                    borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(4.0),
                                       topRight: Radius.circular(4.0),
                                     ),
@@ -75,7 +74,7 @@ class EditProfileScreen extends StatelessWidget {
                                 ),
                               ),
                               IconButton(
-                                icon: CircleAvatar(
+                                icon: const CircleAvatar(
                                   backgroundColor: Colors.blue,
                                   child: Icon(Icons.edit, size: 20.0,),
                                 ),
@@ -85,7 +84,6 @@ class EditProfileScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          alignment: Alignment.topCenter,
                         ),
                         Stack(
                           alignment: Alignment.bottomRight,
@@ -100,7 +98,7 @@ class EditProfileScreen extends StatelessWidget {
                             ),
                             IconButton(
 
-                              icon: CircleAvatar(
+                              icon: const CircleAvatar(
                                 backgroundColor: Colors.blue,
                                 child: Icon(Icons.edit, size: 20.0,),
                               ),
@@ -113,7 +111,7 @@ class EditProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20.0,),
+                  const SizedBox(height: 20.0,),
                   Row(
                     children: [
                       if(SocialCubit.get(context).profileImage != null)
@@ -126,7 +124,7 @@ class EditProfileScreen extends StatelessWidget {
                               }
                           )
                       ),
-                      SizedBox(width: 10,),
+                      const SizedBox(width: 10,),
                       if(SocialCubit.get(context).coverImage != null)
                         Expanded(
                           child: MyButton(
@@ -139,23 +137,23 @@ class EditProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20.0,),
+                  const SizedBox(height: 20.0,),
                   MyTFF(
                     controller: nameCtrlr,
                     keyboardType: TextInputType.name,
-                    prefixIcon: Icon(Icons.person),
+                    prefixIcon: const Icon(Icons.person),
                     labelText: "Name",
                     validator: (value) {
-
+                      return "";
                     }
                   ),
-                  SizedBox(height: 20.0,),
+                  const SizedBox(height: 20.0,),
                   MyTFF(
                       controller: bioCtrlr,
-                      prefixIcon: Icon(Icons.info_outline),
+                      prefixIcon: const Icon(Icons.info_outline),
                       labelText: "Bio",
                       validator: (value) {
-
+                        return "";
                       }
                   ),
                 ],

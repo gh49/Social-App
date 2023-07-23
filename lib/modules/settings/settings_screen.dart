@@ -7,7 +7,7 @@ import 'package:social_app_g/modules/edit_profile/edit_profile_screen.dart';
 import 'package:social_app_g/shared/components/components.dart';
 
 class SettingsScreen extends StatelessWidget {
-  SettingsScreen({super.key});
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +27,12 @@ class SettingsScreen extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   children: [
                     Align(
+                      alignment: Alignment.topCenter,
                       child: Container(
                         width: double.infinity,
                         height: 150,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(4.0),
                               topRight: Radius.circular(4.0),
                             ),
@@ -40,7 +41,6 @@ class SettingsScreen extends StatelessWidget {
                                 image: NetworkImage(userData.cover))
                         ),
                       ),
-                      alignment: Alignment.topCenter,
                     ),
                     CircleAvatar(
                       radius: 55.0,

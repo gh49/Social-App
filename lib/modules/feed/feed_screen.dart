@@ -9,7 +9,7 @@ import 'package:social_app_g/modules/post_view/post_screen.dart';
 import 'package:social_app_g/shared/components/components.dart';
 
 class FeedScreen extends StatelessWidget {
-  FeedScreen({super.key});
+  const FeedScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +24,12 @@ class FeedScreen extends StatelessWidget {
               children: [
                 Card(
                   clipBehavior: Clip.antiAliasWithSaveLayer,
-                  margin: EdgeInsets.symmetric(horizontal: 8.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
                   elevation: 10.0,
                   child: Stack(
                     alignment: AlignmentDirectional.bottomStart,
                     children: [
-                      Image(
+                      const Image(
                         image: NetworkImage("https://s.abcnews.com/images/Entertainment/HT-negan-walking-dead-jef-161026_4x3_992.jpg"),
                         fit: BoxFit.cover,
                         height: 300.0,
@@ -52,7 +52,7 @@ class FeedScreen extends StatelessWidget {
                                   ..color = Colors.black,
                               ),
                             ),
-                            Text(
+                            const Text(
                               "Connect with the world!",
                               style: TextStyle(
                                 //color: Colors.white,
@@ -68,23 +68,23 @@ class FeedScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10.0,
                 ),
                 ListView.separated(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: SocialCubit.get(context).posts.length,
                   itemBuilder: (context, index) {
                     return buildPostItem(context, index, SocialCubit.get(context).posts[index]);
                   },
                   separatorBuilder: (context, index) {
-                    return SizedBox(height: 10.0,);
+                    return const SizedBox(height: 10.0,);
                   },
                 ),
               ],
             ),
-            fallback: (context) => Column(
+            fallback: (context) => const Column(
               children: [
                 SizedBox(height: 300,),
                 Center(child: CircularProgressIndicator(),)
@@ -96,10 +96,9 @@ class FeedScreen extends StatelessWidget {
   }
 
   Widget buildPostItem(BuildContext context, int index, PostData postData) {
-    var cubit = SocialCubit.get(context);
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
-      margin: EdgeInsets.symmetric(horizontal: 8.0),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
       elevation: 10.0,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -112,7 +111,7 @@ class FeedScreen extends StatelessWidget {
                   radius: 25.0,
                   backgroundImage: NetworkImage(postData.image),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20.0,
                 ),
                 Expanded(
@@ -124,10 +123,10 @@ class FeedScreen extends StatelessWidget {
                           Text(
                               postData.name
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5.0,
                           ),
-                          Icon(
+                          const Icon(
                             Icons.check_circle_rounded,
                             color: Colors.blue,
                             size: 17,
@@ -141,12 +140,12 @@ class FeedScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20.0,
                 ),
                 IconButton(
                     onPressed: () {},
-                    icon: Icon(Icons.more_vert)
+                    icon: const Icon(Icons.more_vert)
                 ),
               ],
             ),
@@ -163,8 +162,8 @@ class FeedScreen extends StatelessWidget {
               textAlign: TextAlign.start,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            SizedBox(height: 10.0,),
-            if(postData.postImage != null && postData.postImage!.length > 0)
+            const SizedBox(height: 10.0,),
+            if(postData.postImage != null && postData.postImage!.isNotEmpty)
               Container(
                 width: double.infinity,
                 height: 150,
@@ -176,14 +175,11 @@ class FeedScreen extends StatelessWidget {
             Row(
               children: [
                 InkWell(
-                  onTap: () {
-                    print("Like");
-                  },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           IconBroken.Heart,
                           color: Colors.red,
                         ),
@@ -192,13 +188,13 @@ class FeedScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 InkWell(
                   onTap: () {
 
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Row(
                       children: [
                         Icon(
@@ -226,24 +222,23 @@ class FeedScreen extends StatelessWidget {
                   radius: 17.0,
                   backgroundImage: NetworkImage(SocialCubit.get(context).currentUser!.image),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20.0,
                 ),
                 TextButton(
-                  child: Text("Write a comment..."),
+                  child: const Text("Write a comment..."),
                   onPressed: () {
                     SocialCubit.get(context).getComments(SocialCubit.get(context).postIDList[index]).then((value) {
-                      print("COMMENTS LOAD DONE");
                       navigateTo(context, PostScreen(postData: postData, index: index,));
                     });
                   },
                 ),
-                Spacer(),
+                const Spacer(),
                 IconButton(
                     onPressed: () {
                       SocialCubit.get(context).likePost(SocialCubit.get(context).postIDList[index]);
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       IconBroken.Heart,
                       color: Colors.red,
                       size: 30.0,)

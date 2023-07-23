@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,8 +16,6 @@ import 'package:social_app_g/modules/new_post/new_post_screen.dart';
 import 'package:social_app_g/modules/settings/settings_screen.dart';
 import 'package:social_app_g/modules/users/users_screen.dart';
 
-import '../../shared/components/constants.dart';
-
 class SocialCubit extends Cubit<SocialStates> {
   SocialCubit() : super(SocialInitState());
   static SocialCubit get(context) => BlocProvider.of(context);
@@ -26,18 +23,16 @@ class SocialCubit extends Cubit<SocialStates> {
   UserData? currentUser;
 
   List<Widget> screens = [
-    FeedScreen(),
-    ChatsScreen(),
+    const FeedScreen(),
+    const ChatsScreen(),
     NewPostScreen(),
-    UsersScreen(),
-    SettingsScreen(),
+    const SettingsScreen(),
   ];
 
   List<String> titles = [
     "Feed",
     "Chats",
     "New Post",
-    "Users",
     "Settings",
   ];
 
@@ -60,22 +55,19 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialGetUserLoadingState());
     if(FirebaseAuth.instance.currentUser == null) {
       emit(SocialGetUserErrorState(""));
-      print("User is null");
       currentUser = null;
     }
-    else
+    else {
       FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).get()
           .then((value) {
         currentUser = UserData.fromJson(value.data()!);
-        print(currentUser.toString());
-        print(FirebaseAuth.instance.currentUser!.emailVerified);
         emit(SocialGetUserSuccessState());
       }).catchError((error) {
         emit(SocialGetUserErrorState(error.toString()));
         FirebaseAuth.instance.signOut();
-        print(error.toString());
         currentUser = null;
       });
+    }
   }
 
   File? profileImage;
@@ -90,7 +82,6 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialProfileImagePickedSuccessState());
     }
     else {
-      print("No image is selected");
       emit(SocialProfileImagePickedErrorState());
     }
   }
@@ -103,7 +94,6 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialCoverImagePickedSuccessState());
     }
     else {
-      print("No image is selected");
       emit(SocialCoverImagePickedErrorState());
     }
   }
@@ -151,12 +141,8 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialLoadingUpdateUserState());
     Map<String, dynamic> newData = currentUser!.toJson();
     
-    if(image == null) {
-      image = currentUser!.image;
-    }
-    if(cover == null) {
-      cover = currentUser!.cover;
-    }
+    image ??= currentUser!.image;
+    cover ??= currentUser!.cover;
     
     newData['image'] = image;
     newData['cover'] = cover;
@@ -185,7 +171,6 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialProfileImagePickedSuccessState());
     }
     else {
-      print("No image is selected");
       emit(SocialProfileImagePickedErrorState());
     }
   }
@@ -269,7 +254,6 @@ class SocialCubit extends Cubit<SocialStates> {
           emit(SocialGetPostsErrorState(error.toString()));
         });
       });
-      print("Get Posts Done");
       emit(SocialGetPostsSuccessState());
     }).catchError((error) {
       emit(SocialGetPostsErrorState(error.toString()));
@@ -307,11 +291,9 @@ class SocialCubit extends Cubit<SocialStates> {
     ).
     then((value) {
       emit(SocialCommentOnPostSuccessState());
-      print("Commented successfully");
     }).
     catchError((error) {
       emit(SocialCommentOnPostErrorState());
-      print(error.toString());
     });
   }
 
@@ -326,7 +308,6 @@ class SocialCubit extends Cubit<SocialStates> {
     then((value) {
       comments = [];
       value.docs.forEach((element) {
-        print(element.data());
         comments.add(element.data());
       });
     }).catchError((error) {
@@ -337,7 +318,20 @@ class SocialCubit extends Cubit<SocialStates> {
   List<UserData> allUsers = [];
 
   void getAllUsers() {
-    if(allUsers.isEmpty)
+    bool currentUserInChat = false;
+    for(UserData user in allUsers) {
+      if(user.uID == currentUser!.uID) {
+        currentUserInChat = true;
+        break;
+      }
+    }
+
+    if(allUsers.isNotEmpty && !currentUserInChat) {
+      return;
+    }
+
+    allUsers = [];
+
     FirebaseFirestore.instance.
     collection('users').
     get().
@@ -347,11 +341,11 @@ class SocialCubit extends Cubit<SocialStates> {
           allUsers.add(UserData.fromJson(element.data()));
         }
       });
-      print("Get Users Done");
       emit(SocialGetAllUsersSuccessState());
     }).catchError((error) {
       emit(SocialGetAllUsersErrorState(error.toString()));
     });
+
   }
 
   void sendMessage(String receiverUID, String dateTime, String text) {
@@ -370,7 +364,6 @@ class SocialCubit extends Cubit<SocialStates> {
     collection('messages').
     add(message.toJson()).then((value) {
       emit(SocialSendMessageSuccessState());
-      print("Sent successfully");
     }).catchError((error) {
       emit(SocialSendMessageErrorState());
   });
@@ -383,7 +376,6 @@ class SocialCubit extends Cubit<SocialStates> {
     collection('messages').
     add(message.toJson()).then((value) {
       emit(SocialSendMessageSuccessState());
-      print("Sent successfully");
     }).catchError((error) {
       emit(SocialSendMessageErrorState());
     });
@@ -399,6 +391,7 @@ class SocialCubit extends Cubit<SocialStates> {
     collection('chats').
     doc(otherUserUID).
     collection('messages').
+    orderBy('dateTime').
     snapshots(). 
     listen((event) {
       messages = [];
@@ -406,34 +399,33 @@ class SocialCubit extends Cubit<SocialStates> {
         messages.add(MessageData.fromJson(element.data()));
       }
       );
-      sortMessages();
       emit(SocialReceiveMessagesSuccessState());
     });
   }
 
   //2023-07-20 17:16:05.626628
-  void sortMessages() {
-    List<DateTime> arnab = [];
-    for(int i=0; i<messages.length; i++) {
-      arnab.add(DateTime.parse(messages[i].dateTime));
-    }
-
-    for(int i=0; i<arnab.length; i++) {
-      int min = i;
-      for(int j=i; j<arnab.length; j++) {
-        if(arnab[j].isBefore(arnab[i])) {
-          min = j;
-        }
-      }
-      DateTime tmp = arnab[i];
-      arnab[i] = arnab[min];
-      arnab[min] = tmp;
-
-      MessageData tmp1 = messages[i];
-      messages[i] = messages[min];
-      messages[min] = tmp1;
-    }
-
-    print(messages);
-  }
+  // void sortMessages() {
+  //   List<DateTime> arnab = [];
+  //   for(int i=0; i<messages.length; i++) {
+  //     arnab.add(DateTime.parse(messages[i].dateTime));
+  //   }
+  //
+  //   for(int i=0; i<arnab.length; i++) {
+  //     int min = i;
+  //     for(int j=i; j<arnab.length; j++) {
+  //       if(arnab[j].isBefore(arnab[i])) {
+  //         min = j;
+  //       }
+  //     }
+  //     DateTime tmp = arnab[i];
+  //     arnab[i] = arnab[min];
+  //     arnab[min] = tmp;
+  //
+  //     MessageData tmp1 = messages[i];
+  //     messages[i] = messages[min];
+  //     messages[min] = tmp1;
+  //   }
+  //
+  //   print(messages);
+  // }
 }

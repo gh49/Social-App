@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 // Signout
 // uIDGlobal = null;
@@ -27,7 +26,7 @@ Widget MyTFF({
   decoration: InputDecoration(
     labelText: labelText,
     hintText: hintText,
-    border: OutlineInputBorder(),
+    border: const OutlineInputBorder(),
     prefixIcon: prefixIcon,
     suffixIcon: suffixIcon,
   ),
@@ -41,6 +40,7 @@ Widget MyTextButton({
 }) => Container(
 width: width,
 child: TextButton(
+onPressed: onPressed,
 child: Text(
 text,
 style: TextStyle(
@@ -48,8 +48,7 @@ decoration: TextDecoration.underline,
 decorationColor: textColor,
 color: textColor,
 ),
-),
-onPressed: onPressed
+)
 ),
 );
 
@@ -68,7 +67,7 @@ Widget MyButton({
     child: Text(
       text,
       textAlign: textAlign,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.white,
       ),
     ),

@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app_g/modules/login/states.dart';
@@ -29,7 +28,6 @@ class LoginCubit extends Cubit<LoginState> {
         password: password
     ).then((value) {
       emit(LoginSuccessState(value.user!.uid));
-      print("Login successfully");
     }).catchError((error) {
       emit(LoginErrorState(error.toString()));
     });

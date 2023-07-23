@@ -7,7 +7,6 @@ class CacheHelper
   static init() async
   {
     sharedPreferences = await SharedPreferences.getInstance();
-    print("Shared null = ${sharedPreferences == null}");
   }
 
   static Future<bool> putBoolean({

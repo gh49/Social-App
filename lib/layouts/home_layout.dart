@@ -20,10 +20,8 @@ class HomeScreen extends StatelessWidget {
     }
     return BlocConsumer<SocialCubit, SocialStates>(
         listener: (context, state) {
-          print(state.toString());
           if(state is SocialGetUserErrorState) {
             navigateAndFinish(context, LoginScreen());
-            print(state.error.toString());
           }
           if(state is SocialNewPostState) {
             navigateTo(context, NewPostScreen());
@@ -40,12 +38,12 @@ class HomeScreen extends StatelessWidget {
                 IconButton(
                     onPressed: (){
                     },
-                    icon: Icon(IconBroken.Search)
+                    icon: const Icon(IconBroken.Search)
                 ),
                 IconButton(
                     onPressed: (){
                     },
-                    icon: Icon(IconBroken.Notification)
+                    icon: const Icon(IconBroken.Notification)
                 ),
                 IconButton(
                     onPressed: (){
@@ -56,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                         navigateAndFinish(context, LoginScreen());
                       });
                     },
-                    icon: Icon(IconBroken.Logout)
+                    icon: const Icon(IconBroken.Logout)
                 ),
               ],
             ),
@@ -65,11 +63,10 @@ class HomeScreen extends StatelessWidget {
               onTap: (int index) {
                 cubit.changeBottomNavigation(index);
               },
-              items: [
+              items: const [
                 BottomNavigationBarItem(icon: Icon(IconBroken.Home), label: ""),
                 BottomNavigationBarItem(icon: Icon(IconBroken.Chat), label: ""),
                 BottomNavigationBarItem(icon: Icon(IconBroken.Upload), label: ""),
-                BottomNavigationBarItem(icon: Icon(IconBroken.User), label: ""),
                 BottomNavigationBarItem(icon: Icon(IconBroken.Setting), label: ""),
               ],
             ),
@@ -79,7 +76,6 @@ class HomeScreen extends StatelessWidget {
                   ConditionalBuilder(
                     condition: SocialCubit.get(context).currentUser != null,
                     builder: (context) {
-                      print("${FirebaseAuth.instance.currentUser!.email}: ${FirebaseAuth.instance.currentUser!.emailVerified}");
                       return Column(
                         children: [
                           if(!(FirebaseAuth.instance.currentUser!.emailVerified))
@@ -88,13 +84,13 @@ class HomeScreen extends StatelessWidget {
                               color: Colors.yellow.withOpacity(0.7),
                               child: Row(
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 5.0),
                                     child: Icon(
                                       Icons.info,
                                     ),
                                   ),
-                                  Expanded(
+                                  const Expanded(
                                     child: Text(
                                       "Please verify your account",
                                       textAlign: TextAlign.start,
@@ -107,7 +103,6 @@ class HomeScreen extends StatelessWidget {
                                             .then((value) {
                                           ShowToast(text: "Verification email sent successfully", state: ToastStates.SUCCESS, context: context);
                                         }).catchError((error) {
-                                          print(error.toString());
                                         });
                                       })
                                 ],
@@ -116,7 +111,7 @@ class HomeScreen extends StatelessWidget {
                         ],
                       );
                     },
-                    fallback: (context) => Center(child: CircularProgressIndicator()),
+                    fallback: (context) => const Center(child: CircularProgressIndicator()),
                   ),
                   cubit.screens[cubit.screenIndex],
                 ],

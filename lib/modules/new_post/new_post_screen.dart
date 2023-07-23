@@ -7,13 +7,13 @@ import 'package:social_app_g/layouts/cubit/states.dart';
 class NewPostScreen extends StatelessWidget {
   NewPostScreen({super.key});
 
-  TextEditingController textCtrlr = TextEditingController();
+  final TextEditingController textCtrlr = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Post"),
+        title: const Text("Create Post"),
         actions: [
           TextButton(
               onPressed: () {
@@ -32,7 +32,7 @@ class NewPostScreen extends StatelessWidget {
                   );
                 }
               },
-              child: Text(
+              child: const Text(
                 "POST",
               )),
         ],
@@ -47,16 +47,16 @@ class NewPostScreen extends StatelessWidget {
             child: Column(
               children: [
                 if(state is SocialCreatePostLoadingState)
-                  LinearProgressIndicator(),
+                  const LinearProgressIndicator(),
                 if(state is SocialCreatePostLoadingState)
-                  SizedBox(height: 20.0,),
+                  const SizedBox(height: 20.0,),
                 Row(
                   children: [
                     CircleAvatar(
                       radius: 25.0,
                       backgroundImage: NetworkImage(SocialCubit.get(context).currentUser!.image),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20.0,
                     ),
                     Expanded(
@@ -72,7 +72,7 @@ class NewPostScreen extends StatelessWidget {
                     keyboardType: TextInputType.multiline,
                     expands: true,
                     maxLines: null,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: "What's in your mind",
                       border: InputBorder.none,
                     ),
@@ -86,7 +86,7 @@ class NewPostScreen extends StatelessWidget {
                       width: double.infinity,
                       height: 150,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                           image: DecorationImage(
                               fit: BoxFit.cover,
                               image: FileImage(SocialCubit.get(context).postImage!),
@@ -94,7 +94,7 @@ class NewPostScreen extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.highlight_remove_outlined, size: 40.0,),
+                      icon: const Icon(Icons.highlight_remove_outlined, size: 40.0,),
                       color: Colors.red,
                       onPressed: () {
                         SocialCubit.get(context).removePostImage();
@@ -106,7 +106,7 @@ class NewPostScreen extends StatelessWidget {
                     onPressed: () {
                       SocialCubit.get(context).getPostImage();
                     }, 
-                    child: Row(
+                    child: const Row(
                       children: [
                         Icon(IconBroken.Image_2),
                         SizedBox(width: 5.0,),
